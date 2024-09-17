@@ -1,6 +1,6 @@
 'use client'
 
-import { FullscreenCenter } from "./fullscreenCenter"
+import { FullscreenCenter } from "./FullscreenCenter"
 
 export function LoadingScreen() {
     return (

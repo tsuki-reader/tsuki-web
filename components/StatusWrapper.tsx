@@ -4,8 +4,8 @@ import { endpoint } from "@/helpers/endpoint";
 import sendRequest from "@/helpers/request";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { Login } from "./auth/login";
-import { LoadingScreen } from "./loadingScreen";
+import { Login } from "./auth/Login";
+import { LoadingScreen } from "./LoadingScreen";
 import { Viewer } from "@/types/anilist";
 import { ViewerProvider } from "@/contexts/viewer";
 

@@ -3,9 +3,9 @@
 import { faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { endpoint } from '@/helpers/endpoint'
 import sendRequest from '@/helpers/request'
-import { NavLink } from './navLink'
-import { Logo } from '../svg/logo'
-import { NavLinkIcon } from './navLinkIcon'
+import { NavLink } from './NavLink'
+import { Logo } from '../svg/Logo'
+import { NavLinkIcon } from './NavLinkIcon'
  
 export function Nav() {
   const logout = () => {

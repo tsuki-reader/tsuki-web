@@ -1,5 +1,5 @@
-import { FullscreenCenter } from "@/components/fullscreenCenter";
-import { ProfileCard } from "@/components/profileCard";
+import { FullscreenCenter } from "@/components/FullscreenCenter";
+import { ProfileCard } from "@/components/ProfileCard";
 
 export default function Home() {
   return (

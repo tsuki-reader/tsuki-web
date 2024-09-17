@@ -1,6 +1,6 @@
 'use client'
 
-import { FullscreenCenter } from "@/components/fullscreenCenter"
+import { FullscreenCenter } from "@/components/FullscreenCenter"
 import { endpoint } from "@/helpers/endpoint"
 import sendRequest from "@/helpers/request"
 import { useRouter } from "next/navigation"

@@ -1,4 +1,4 @@
-import { FullscreenCenter } from "@/components/fullscreenCenter";
+import { FullscreenCenter } from "@/components/FullscreenCenter";
 
 export default function Page() {
     return (

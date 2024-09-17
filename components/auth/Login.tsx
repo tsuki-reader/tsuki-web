@@ -1,8 +1,8 @@
 'use client'
 
-import { FullscreenCenter } from "../fullscreenCenter"
-import { AnilistLogo } from "../svg/anilistLogo"
-import { Logo } from "../svg/logo"
+import { FullscreenCenter } from "../FullscreenCenter"
+import { AnilistLogo } from "../svg/AnilistLogo"
+import { Logo } from "../svg/Logo"
 
 export function Login() {
     return (
