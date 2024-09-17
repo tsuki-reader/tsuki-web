@@ -6,20 +6,29 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Login } from "./auth/login";
 import { LoadingScreen } from "./loadingScreen";
+import { Viewer } from "@/types/anilist";
+import { ViewerProvider } from "@/contexts/viewer";
 
 interface Props {
     children: React.ReactNode
 }
 
+interface StatusResponse {
+    authenticated: boolean
+    viewer: Viewer | null
+}
+
 export default function StatusWrapper({ children }: Props) {
     const [loading, setLoading] = useState(true)
     const [authenticated, setAuthenticated] = useState(false)
+    const [currentViewer, setCurrentViewer] = useState<Viewer | null>(null)
 
     const pathname = usePathname()
 
-    const handleStatus = (json: {authenticated: boolean}) => {
-        if (json.authenticated) {
+    const handleStatus = (json: StatusResponse) => {
+        if (json.authenticated && json.viewer !== null) {
             setAuthenticated(true)
+            setCurrentViewer(json.viewer)
         } else {
             setAuthenticated(false)
         }
@@ -51,7 +60,11 @@ export default function StatusWrapper({ children }: Props) {
     // TODO: Show settings on first boot?
 
     if (authenticated) {
-        return children
+        return (
+            <ViewerProvider value={currentViewer}>
+                {children}
+            </ViewerProvider>
+        )
     } else {
         return (
             <Login />
