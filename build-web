@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+# OPTIONAL: set TSUKI_DIR to the path of the Tsuki 
+# backend project if you're also developing
+# on the backend:
+# TSUKI_DIR="/path/to/tsuki/"
+
+npm run build
+if [ -n "$TSUKI_DIR" ]; then
+    # Remove trailing slash
+    TSUKI_DIR="${TSUKI_DIR%/}"
+    rm -r "$TSUKI_DIR/web/"*
+    cp -a out/. "$TSUKI_DIR/web/"
+else
+    echo "TSUKI_DIR not specified."
+fi
