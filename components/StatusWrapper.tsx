@@ -16,16 +16,19 @@ interface Props {
 interface StatusResponse {
     authenticated: boolean
     viewer: Viewer | null
+    clientId: string
 }
 
 export default function StatusWrapper({ children }: Props) {
     const [loading, setLoading] = useState(true)
     const [authenticated, setAuthenticated] = useState(false)
     const [currentViewer, setCurrentViewer] = useState<Viewer | null>(null)
+    const [clientId, setClientId] = useState<string>("")
 
     const pathname = usePathname()
 
     const handleStatus = (json: StatusResponse) => {
+        setClientId(json.clientId)
         if (json.authenticated && json.viewer !== null) {
             setAuthenticated(true)
             setCurrentViewer(json.viewer)
@@ -67,7 +70,7 @@ export default function StatusWrapper({ children }: Props) {
         )
     } else {
         return (
-            <Login />
+            <Login clientId={clientId} />
         )
     }
 }
