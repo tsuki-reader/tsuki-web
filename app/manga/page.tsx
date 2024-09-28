@@ -1,9 +1,7 @@
-import { FullscreenCenter } from "@/components/FullscreenCenter";
+import { MangaCollectionPage } from "@/components/manga/MangaCollectionPage";
 
 export default function Page() {
     return (
-        <FullscreenCenter>
-            <p>Manga!</p>
-        </FullscreenCenter>
+        <MangaCollectionPage />
     )
 }

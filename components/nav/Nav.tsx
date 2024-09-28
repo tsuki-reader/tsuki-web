@@ -1,6 +1,6 @@
 'use client'
  
-import { faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faPuzzlePiece, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import { endpoint } from '@/helpers/endpoint'
 import sendRequest from '@/helpers/request'
 import { NavLink } from './NavLink'
@@ -26,7 +26,7 @@ export function Nav() {
         </div>
 
         <div className="flex gap-2 items-center">
-            <NavLinkIcon icon={faGear} href="/settings" />
+            <NavLinkIcon icon={faPuzzlePiece} href="/repositories" />
             <NavLinkIcon icon={faRightFromBracket} onClick={logout} />
         </div>
     </nav>
