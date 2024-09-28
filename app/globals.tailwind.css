@@ -28,4 +28,30 @@ body {
   .logo {
     fill: rgb(var(--foreground));
   }
+
+  /* Webkit scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--background));
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--foreground));
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--foreground));
+  }
+
+  /* Non-webkit scrollbar styles */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--foreground)) transparent;
+  }
 }
