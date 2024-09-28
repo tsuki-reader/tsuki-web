@@ -55,7 +55,6 @@ export function Repositories() {
     }
 
     const onRepoUpdated = (repo: Repository) => {
-        console.log(repo)
         const repos = repositories.filter((repository) => repository.id !== repo.id)
 
         setRepositories([...repos, repo].sort((repoA, repoB) => repoA.id.localeCompare(repoB.id)))
