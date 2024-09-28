@@ -2,10 +2,11 @@ import { ChangeEvent, useState } from "react"
 import { Modal } from "../Modal"
 import { endpoint } from "@/helpers/endpoint"
 import sendRequest from "@/helpers/request"
+import { Repository } from "@/types/extensions"
 
 interface Props {
     opened: boolean
-    onRepoInstalled: () => void
+    onRepoInstalled: (repos: Repository[]) => void
     onClose: React.ReactEventHandler<HTMLDialogElement>
 }
 
@@ -32,8 +33,8 @@ export function InstallRepository({ opened, onRepoInstalled, onClose }: Props) {
         }
     }
 
-    const handleResponse = () => {
-        onRepoInstalled()
+    const handleResponse = (repos: Repository[]) => {
+        onRepoInstalled(repos)
         setValue('')
     }
 

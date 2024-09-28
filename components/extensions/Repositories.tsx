@@ -8,21 +8,16 @@ import { RepositoryButton } from "./RepositoryButton"
 import { InstallRepository } from "./InstallRepository"
 import { RepositoryModal } from "./RepositoryModal"
 
-// TODO: Instead of refreshing repositories, return the repositories from the backend
-function refreshRepositories(handleResponse: (repos: Repository[]) => void) {
-    const url = endpoint('/api/repositories')
-    sendRequest(url)
-        .then((repos) => handleResponse(repos))
-        .catch((error) => console.log(error))
-}
-
 export function Repositories() {
     const [repositories, setRepositories] = useState<Repository[]>([])
     const [selectedRepo, setSelectedRepo] = useState<Repository | null>(null)
     const [installRepoOpened, setInstallRepoOpened] = useState<boolean>(false)
 
     useEffect(() => {
-        refreshRepositories(handleResponse)
+        const url = endpoint('/api/repositories')
+        sendRequest(url)
+            .then((repos) => handleResponse(repos))
+            .catch((error) => console.log(error))
     }, [])
 
     const handleResponse = (repos: Repository[]) => {
@@ -49,9 +44,9 @@ export function Repositories() {
         setSelectedRepo(null)
     }
 
-    const onRepoInstalled = () => {
+    const onRepoInstalled = (repos: Repository[]) => {
         setInstallRepoOpened(false)
-        refreshRepositories(handleResponse)
+        setRepositories(repos)
     }
 
     return (
