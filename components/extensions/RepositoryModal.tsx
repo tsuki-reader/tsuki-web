@@ -10,13 +10,24 @@ interface Props {
     opened: boolean
     onClose: React.ReactEventHandler<HTMLDialogElement>
     onRepoUninstall: (repos: Repository[]) => void
+    onRepoUpdate: (repo: Repository) => void
 }
 
-export function RepositoryModal({ repository, opened, onClose, onRepoUninstall }: Props) {
+export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, onRepoUpdate }: Props) {
     const uninstall = () => {
         const url = endpoint(`/api/repositories/${repository.id}`)
         sendRequest(url, 'DELETE')
             .then((repos) => onRepoUninstall(repos))
+            .catch((error) => {
+                // TODO: Error handling
+                console.log(error)
+            })
+    }
+
+    const update = () => {
+        const url = endpoint(`/api/repositories/${repository.id}`)
+        sendRequest(url, 'PATCH')
+            .then((repo) => onRepoUpdate(repo))
             .catch((error) => {
                 // TODO: Error handling
                 console.log(error)
@@ -51,7 +62,9 @@ export function RepositoryModal({ repository, opened, onClose, onRepoUninstall }
                 <small>{repository.id}</small>
             </div>
             <div className="flex flex-row w-full justify-center gap-4 mb-8">
-                <button className="whitespace-nowrap h-fit rounded-full py-2 px-4 border-2 border-foreground hover:bg-foreground/10 transition duration-300 ease-in-out">
+                <button className="whitespace-nowrap h-fit rounded-full py-2 px-4 border-2 border-foreground hover:bg-foreground/10 transition duration-300 ease-in-out"
+                    onClick={update}
+                >
                     Update
                 </button>
                 <button className="whitespace-nowrap h-fit rounded-full py-2 px-4 border-2 border-red-500 hover:bg-red-500/10 text-red-500 transition duration-300 ease-in-out"

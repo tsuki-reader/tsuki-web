@@ -54,6 +54,14 @@ export function Repositories() {
         setRepositories(repos)
     }
 
+    const onRepoUpdated = (repo: Repository) => {
+        console.log(repo)
+        const repos = repositories.filter((repository) => repository.id !== repo.id)
+
+        setRepositories([...repos, repo].sort((repoA, repoB) => repoA.id.localeCompare(repoB.id)))
+        setSelectedRepo(repo)
+    }
+
     return (
         <div className="my-[150px] mx-12">
             <div className="flex justify-between">
@@ -69,7 +77,12 @@ export function Repositories() {
             </div>
             <InstallRepository opened={installRepoOpened} onRepoInstalled={onRepoInstalled} onClose={closeInstallRepoModal} />
             {selectedRepo !== null &&
-                <RepositoryModal repository={selectedRepo} opened={selectedRepo !== null} onClose={closeRepoModal} onRepoUninstall={onRepoUninstalled} />
+                <RepositoryModal repository={selectedRepo}
+                    opened={selectedRepo !== null}
+                    onClose={closeRepoModal}
+                    onRepoUninstall={onRepoUninstalled}
+                    onRepoUpdate={onRepoUpdated}
+                />
             }
         </div>
     )
