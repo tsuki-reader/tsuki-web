@@ -6,6 +6,7 @@ import { Repository } from "@/types/extensions"
 import { useEffect, useState } from "react"
 import { RepositoryButton } from "./RepositoryButton"
 import { InstallRepository } from "./InstallRepository"
+import { RepositoryModal } from "./RepositoryModal"
 
 // TODO: Instead of refreshing repositories, return the repositories from the backend
 function refreshRepositories(handleResponse: (repos: Repository[]) => void) {
@@ -17,6 +18,7 @@ function refreshRepositories(handleResponse: (repos: Repository[]) => void) {
 
 export function Repositories() {
     const [repositories, setRepositories] = useState<Repository[]>([])
+    const [selectedRepo, setSelectedRepo] = useState<Repository | null>(null)
     const [installRepoOpened, setInstallRepoOpened] = useState<boolean>(false)
 
     useEffect(() => {
@@ -28,7 +30,7 @@ export function Repositories() {
     }
 
     const renderRepositories = () => {
-        return repositories.map((repository, index) => <RepositoryButton key={index} repository={repository} />)
+        return repositories.map((repository, index) => <RepositoryButton key={index} repository={repository} onClick={() => openRepoModal(repository)} />)
     }
 
     const openInstallRepoModal = () => {
@@ -39,6 +41,14 @@ export function Repositories() {
         setInstallRepoOpened(false)
     }
 
+    const openRepoModal = (repo: Repository) => {
+        setSelectedRepo(repo)
+    }
+
+    const closeRepoModal = () => {
+        setSelectedRepo(null)
+    }
+
     const onRepoInstalled = () => {
         setInstallRepoOpened(false)
         refreshRepositories(handleResponse)
@@ -47,7 +57,7 @@ export function Repositories() {
     return (
         <div className="my-[150px] mx-12">
             <div className="flex justify-between">
-                <h1 className="text-3xl font-bold">Installed Repositories</h1>
+                <h1 className="text-3xl font-bold">Your repositories</h1>
                 <button className="whitespace-nowrap h-fit rounded-full py-2 px-4 border-2 border-foreground hover:bg-foreground/10 transition duration-300 ease-in-out"
                     onClick={openInstallRepoModal}
                 >
@@ -58,6 +68,9 @@ export function Repositories() {
                 {renderRepositories()}
             </div>
             <InstallRepository opened={installRepoOpened} onRepoInstalled={onRepoInstalled} onClose={closeInstallRepoModal} />
+            {selectedRepo !== null &&
+                <RepositoryModal repository={selectedRepo} opened={selectedRepo !== null} onClose={closeRepoModal} />
+            }
         </div>
     )
 }

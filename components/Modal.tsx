@@ -36,9 +36,9 @@ export function Modal({ opened, children, onClose }: Props) {
         <dialog ref={ref}
             onClick={onClick}
             onClose={onClose}
-            className="backdrop:backdrop-blur-sm bg-transparent text-foreground focus:outline-none"
+            className="backdrop:backdrop-blur-sm bg-transparent text-foreground focus:outline-none max-w-[750px] w-full"
         >
-            <div className="p-8 rounded border-2 border-foreground bg-background">
+            <div className="p-8 rounded border-2 border-foreground bg-background max-h-[500px] overflow-x-hidden m-4">
                 {children}
             </div>
         </dialog>
