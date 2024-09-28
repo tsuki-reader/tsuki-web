@@ -49,6 +49,11 @@ export function Repositories() {
         setRepositories(repos)
     }
 
+    const onRepoUninstalled = (repos: Repository[]) => {
+        setSelectedRepo(null)
+        setRepositories(repos)
+    }
+
     return (
         <div className="my-[150px] mx-12">
             <div className="flex justify-between">
@@ -64,7 +69,7 @@ export function Repositories() {
             </div>
             <InstallRepository opened={installRepoOpened} onRepoInstalled={onRepoInstalled} onClose={closeInstallRepoModal} />
             {selectedRepo !== null &&
-                <RepositoryModal repository={selectedRepo} opened={selectedRepo !== null} onClose={closeRepoModal} />
+                <RepositoryModal repository={selectedRepo} opened={selectedRepo !== null} onClose={closeRepoModal} onRepoUninstall={onRepoUninstalled} />
             }
         </div>
     )
