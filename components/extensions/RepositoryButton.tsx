@@ -7,7 +7,7 @@ interface Props {
 
 export function RepositoryButton({ repository }: Props) {
     return (
-        <div className="flex flex-col p-6 items-center h-fit w-fit gap-4 hover:bg-foreground/10 rounded cursor-pointer transition duration-300 ease-in-out">
+        <div className="flex flex-col p-6 items-center h-fit w-fit gap-4 hover:bg-foreground/10 border-2 border-transparent hover:border-foreground/50 rounded cursor-pointer transition duration-300 ease-in-out">
             <Image
                 className="h-16 w-auto"
                 src={repository.logo}
