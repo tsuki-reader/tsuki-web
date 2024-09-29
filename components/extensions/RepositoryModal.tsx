@@ -7,6 +7,7 @@ import sendRequest from "@/helpers/request";
 import { useState } from "react";
 import { ErrorMessage } from "../ErrorMessage";
 import { ErrorResponse } from "@/types/requests";
+import { SuccessMessage } from "../SuccessMessage";
 
 interface Props {
     repository: Repository
@@ -18,6 +19,7 @@ interface Props {
 
 export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, onRepoUpdate }: Props) {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
+    const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
     const uninstall = () => {
         const url = endpoint(`/api/repositories/${repository.id}`)
@@ -27,14 +29,21 @@ export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, 
     }
 
     const update = () => {
+        setErrorMessage(null)
+        setSuccessMessage(null)
         const url = endpoint(`/api/repositories/${repository.id}`)
         sendRequest(url, 'PATCH')
-            .then((repo: Repository) => onRepoUpdate(repo, repo.id !== repository.id, repository.id))
+            .then((repo: Repository) => {
+                setErrorMessage(null)
+                setSuccessMessage('Repository updated successfully')
+                onRepoUpdate(repo, repo.id !== repository.id, repository.id)
+            })
             .catch((error: ErrorResponse) => setErrorMessage(error.error))
     }
 
     const closeModal = (event: React.SyntheticEvent<HTMLDialogElement, Event>) => {
         setErrorMessage(null)
+        setSuccessMessage(null)
         onClose(event)
     }
 
@@ -79,6 +88,7 @@ export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, 
                     </button>
                 </div>
                 <ErrorMessage message={errorMessage} />
+                <SuccessMessage message={successMessage} />
             </div>
             <div className="flex flex-col w-full gap-8">
                 <details open>
