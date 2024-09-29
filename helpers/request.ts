@@ -15,9 +15,10 @@ export default async function sendRequest(url: string, method: string = "GET", d
         body
     })
 
+    const json = await response.json()
     if (response.ok) {
-        return await response.json()
+        return json
     } else {
-        return Promise.reject()
+        return Promise.reject(json)
     }
 }

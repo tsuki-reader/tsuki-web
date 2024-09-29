@@ -3,6 +3,8 @@ import { Modal } from "../Modal"
 import { endpoint } from "@/helpers/endpoint"
 import sendRequest from "@/helpers/request"
 import { Repository } from "@/types/extensions"
+import { ErrorMessage } from "../ErrorMessage"
+import { ErrorResponse } from "@/types/requests"
 
 interface Props {
     opened: boolean
@@ -13,6 +15,7 @@ interface Props {
 export function InstallRepository({ opened, onRepoInstalled, onClose }: Props) {
     const [valid, setValid] = useState<boolean>(false)
     const [value, setValue] = useState<string>('')
+    const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
     const isValidUrl = (url: string) => {
         try {
@@ -36,6 +39,12 @@ export function InstallRepository({ opened, onRepoInstalled, onClose }: Props) {
     const handleResponse = (repos: Repository[]) => {
         onRepoInstalled(repos)
         setValue('')
+        setErrorMessage(null)
+    }
+
+    const closeModal = (event: React.SyntheticEvent<HTMLDialogElement, Event>) => {
+        setErrorMessage(null)
+        onClose(event)
     }
 
     const install = () => {
@@ -45,14 +54,11 @@ export function InstallRepository({ opened, onRepoInstalled, onClose }: Props) {
         }
         sendRequest(url, 'POST', data)
             .then(handleResponse)
-            .catch((error) => {
-                // TODO: Report error to frontend
-                console.log(error)
-            })
+            .catch((error: ErrorResponse) => setErrorMessage(error.error))
     }
 
     return (
-        <Modal opened={opened} onClose={onClose}>
+        <Modal opened={opened} onClose={closeModal}>
             <div className="flex flex-col gap-4 text-center">
                 <h1 className="font-bold text-3xl">Install from url</h1>
                 <p>Install a repository by providing the URL to the remote repository file.</p>
@@ -67,6 +73,7 @@ export function InstallRepository({ opened, onRepoInstalled, onClose }: Props) {
                 >
                     Install
                 </button>
+                <ErrorMessage message={errorMessage} />
             </div>
         </Modal>
     )
