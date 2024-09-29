@@ -54,8 +54,13 @@ export function Repositories() {
         setRepositories(repos)
     }
 
-    const onRepoUpdated = (repo: Repository) => {
-        const repos = repositories.filter((repository) => repository.id !== repo.id)
+    const onRepoUpdated = (repo: Repository, idChanged: boolean, oldRepoId: string) => {
+        let repos: Repository[] = []
+        if (idChanged) {
+            repos = repositories.filter((repository) => repository.id !== oldRepoId)
+        } else {
+            repos = repositories.filter((repository) => repository.id !== repo.id)
+        }
 
         setRepositories([...repos, repo].sort((repoA, repoB) => repoA.id.localeCompare(repoB.id)))
         setSelectedRepo(repo)

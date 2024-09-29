@@ -10,7 +10,7 @@ interface Props {
     opened: boolean
     onClose: React.ReactEventHandler<HTMLDialogElement>
     onRepoUninstall: (repos: Repository[]) => void
-    onRepoUpdate: (repo: Repository) => void
+    onRepoUpdate: (repo: Repository, idChanged: boolean, oldRepoId: string) => void
 }
 
 export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, onRepoUpdate }: Props) {
@@ -27,7 +27,7 @@ export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, 
     const update = () => {
         const url = endpoint(`/api/repositories/${repository.id}`)
         sendRequest(url, 'PATCH')
-            .then((repo) => onRepoUpdate(repo))
+            .then((repo: Repository) => onRepoUpdate(repo, repo.id !== repository.id, repository.id))
             .catch((error) => {
                 // TODO: Error handling
                 console.log(error)
