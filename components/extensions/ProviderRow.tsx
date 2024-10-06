@@ -23,15 +23,27 @@ export function ProviderRow({ provider, repository, providerType, onProviderInst
         setLoading(false)
     }
 
+    const updateProvider = () => {
+        const data = {
+            "repository_id": repository.id,
+            "provider_type": providerType
+        }
+        submitRequest(`/api/providers/${provider.id}`, "PATCH", data)
+    }
+
     const installProvider = () => {
-        setLoading(true)
-        const url = endpoint("/api/providers")
         const data = {
             "provider_id": provider.id,
             "repository_id": repository.id,
             "provider_type": providerType
         }
-        sendRequest(url, "POST", data)
+        submitRequest("/api/providers", "POST", data)
+    }
+
+    const submitRequest = (_endpoint: string, method: string, data: object) => {
+        setLoading(true)
+        const url = endpoint(_endpoint)
+        sendRequest(url, method, data)
             .then(handleResponse)
             .catch((error) => {
                 console.log(error)
@@ -57,7 +69,7 @@ export function ProviderRow({ provider, repository, providerType, onProviderInst
             {provider.installed && !loading &&
                 (
                     <div className="flex flex-row gap-2">
-                        <FontAwesomeIcon className="text-lg cursor-pointer" icon={faRotate} title="Update" />
+                        <FontAwesomeIcon onClick={updateProvider} className="text-lg cursor-pointer" icon={faRotate} title="Update" />
                         <FontAwesomeIcon className="text-lg cursor-pointer" icon={faTrashCan} title="Uninstall" />
                     </div>
                 )
