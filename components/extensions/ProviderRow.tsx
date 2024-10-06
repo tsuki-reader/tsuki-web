@@ -40,6 +40,14 @@ export function ProviderRow({ provider, repository, providerType, onProviderInst
         submitRequest("/api/providers", "POST", data)
     }
 
+    const deleteProvider = () => {
+        const data = {
+            "repository_id": repository.id,
+            "provider_type": providerType
+        }
+        submitRequest(`/api/providers/${provider.id}`, "DELETE", data)
+    }
+
     const submitRequest = (_endpoint: string, method: string, data: object) => {
         setLoading(true)
         const url = endpoint(_endpoint)
@@ -70,7 +78,7 @@ export function ProviderRow({ provider, repository, providerType, onProviderInst
                 (
                     <div className="flex flex-row gap-2">
                         <FontAwesomeIcon onClick={updateProvider} className="text-lg cursor-pointer text-green-500" icon={faRotate} title="Update" />
-                        <FontAwesomeIcon className="text-lg cursor-pointer text-red-500" icon={faTrashCan} title="Uninstall" />
+                        <FontAwesomeIcon onClick={deleteProvider} className="text-lg cursor-pointer text-red-500" icon={faTrashCan} title="Uninstall" />
                     </div>
                 )
             }
