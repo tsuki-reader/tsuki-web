@@ -6,6 +6,7 @@ import { Provider, Repository } from "@/types/extensions";
 import { faDownload, faRotate, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
+import { useState } from "react";
 
 interface Props {
     provider: Provider
@@ -15,12 +16,15 @@ interface Props {
 }
 
 export function ProviderRow({ provider, repository, providerType, onProviderInstalled }: Props) {
+    const [loading, setLoading] = useState<boolean>(false)
 
     const handleResponse = (providers: Provider[]) => {
         onProviderInstalled(providers, providerType)
+        setLoading(false)
     }
 
     const installProvider = () => {
+        setLoading(true)
         const url = endpoint("/api/providers")
         const data = {
             "provider_id": provider.id,
@@ -29,7 +33,10 @@ export function ProviderRow({ provider, repository, providerType, onProviderInst
         }
         sendRequest(url, "POST", data)
             .then(handleResponse)
-            .catch((error) => console.log(error))
+            .catch((error) => {
+                console.log(error)
+                setLoading(false)
+            })
     }
 
     return (
@@ -44,10 +51,10 @@ export function ProviderRow({ provider, repository, providerType, onProviderInst
                 />
                 <p>{provider.name}</p>
             </div>
-            {!provider.installed &&
+            {!provider.installed && !loading &&
                 <FontAwesomeIcon onClick={installProvider} className="text-lg cursor-pointer" icon={faDownload} />
             }
-            {provider.installed &&
+            {provider.installed && !loading &&
                 (
                     <div className="flex flex-row gap-2">
                         <FontAwesomeIcon className="text-lg cursor-pointer" icon={faRotate} title="Update" />
