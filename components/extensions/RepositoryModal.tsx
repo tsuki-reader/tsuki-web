@@ -17,9 +17,12 @@ interface Props {
     onRepoUpdate: (repo: Repository, idChanged: boolean, oldRepoId: string) => void
 }
 
+// TODO: Send a request to retrieve the providers
 export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, onRepoUpdate }: Props) {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
     const [successMessage, setSuccessMessage] = useState<string | null>(null)
+    const [mangaProviders, setMangaProviders] = useState<Provider[]>(repository.manga_providers)
+    const [comicProviders, setComicProviders] = useState<Provider[]>(repository.comic_providers)
 
     const uninstall = () => {
         const url = endpoint(`/api/repositories/${repository.id}`)
@@ -47,7 +50,15 @@ export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, 
         onClose(event)
     }
 
-    const providerRows = (providers: Provider[]) => {
+    const onProviderInstalled = (providers: Provider[], type: string) => {
+        if (type === 'comics') {
+            setComicProviders(providers)
+        } else {
+            setMangaProviders(providers)
+        }
+    }
+
+    const providerRows = (providers: Provider[], providerType: string) => {
         if (providers.length === 0) {
             return (
                 <div className="w-full text-center">
@@ -56,7 +67,7 @@ export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, 
             )
         }
 
-        return providers.map((provider, index) => <ProviderRow key={index} provider={provider} />)
+        return providers.map((provider, index) => <ProviderRow key={index} provider={provider} repository={repository} providerType={providerType} onProviderInstalled={onProviderInstalled} />)
     }
 
     return (
@@ -94,14 +105,14 @@ export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, 
                 <details open>
                     <summary className="font-bold text-xl cursor-pointer">Manga providers</summary>
                     <div className="mt-4 flex flex-col gap-2">
-                        {providerRows(repository.manga_providers)}
+                        {providerRows(mangaProviders, "manga")}
                     </div>
                 </details>
 
                 <details>
                     <summary className="font-bold text-xl cursor-pointer">Comic providers</summary>
                     <div className="mt-4 flex flex-col gap-2">
-                        {providerRows(repository.comic_providers)}
+                        {providerRows(comicProviders, "comics")}
                     </div>
                 </details>
             </div>
