@@ -64,13 +64,13 @@ export function ProviderRow({ provider, repository, providerType, onProviderInst
                 <p>{provider.name}</p>
             </div>
             {!provider.installed && !loading &&
-                <FontAwesomeIcon onClick={installProvider} className="text-lg cursor-pointer" icon={faDownload} />
+                <FontAwesomeIcon onClick={installProvider} className="text-lg cursor-pointer text-green-500" icon={faDownload} />
             }
             {provider.installed && !loading &&
                 (
                     <div className="flex flex-row gap-2">
-                        <FontAwesomeIcon onClick={updateProvider} className="text-lg cursor-pointer" icon={faRotate} title="Update" />
-                        <FontAwesomeIcon className="text-lg cursor-pointer" icon={faTrashCan} title="Uninstall" />
+                        <FontAwesomeIcon onClick={updateProvider} className="text-lg cursor-pointer text-green-500" icon={faRotate} title="Update" />
+                        <FontAwesomeIcon className="text-lg cursor-pointer text-red-500" icon={faTrashCan} title="Uninstall" />
                     </div>
                 )
             }
