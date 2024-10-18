@@ -1,4 +1,4 @@
-import { MediaList, ProgressEntry } from "@/types/anilist";
+import { MediaList } from "@/types/anilist";
 import { MangaPoster } from "./MangaPoster";
 
 interface Props {
