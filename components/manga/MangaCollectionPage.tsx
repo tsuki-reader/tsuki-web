@@ -17,24 +17,6 @@ export function MangaCollectionPage() {
     const bgRef = useRef<HTMLDivElement>(null)
     const interval = useRef<NodeJS.Timeout | null>(null)
 
-    const handleStatus = (lists: MediaList[]) => {
-        setLoading(false)
-        const reading = lists.find((list) => list.status === 'CURRENT')
-        const newLists = lists.filter((list) => !["CURRENT", "COMPLETED"].includes(list.status) && !list.isCustomList)
-        setLists(newLists)
-        if (reading !== undefined && interval.current === null) {
-            setReading(reading)
-            const banners = reading
-                .entries
-                .map((entry) => entry.media.bannerImage)
-                .filter((banner) => banner !== "")
-            setRandomBackground(banners)
-            interval.current = setInterval(() => {
-                setRandomBackground(banners)
-            }, 60000)
-        }
-    }
-
     const handleError = () => {
         setLoading(false)
         setError(true)
@@ -53,6 +35,24 @@ export function MangaCollectionPage() {
     }
 
     useEffect(() => {
+        const handleStatus = (lists: MediaList[]) => {
+            setLoading(false)
+            const reading = lists.find((list) => list.status === 'CURRENT')
+            const newLists = lists.filter((list) => !["CURRENT", "COMPLETED"].includes(list.status) && !list.isCustomList)
+            setLists(newLists)
+            if (reading !== undefined && interval.current === null) {
+                setReading(reading)
+                const banners = reading
+                    .entries
+                    .map((entry) => entry.media.bannerImage)
+                    .filter((banner) => banner !== "")
+                setRandomBackground(banners)
+                interval.current = setInterval(() => {
+                    setRandomBackground(banners)
+                }, 60000)
+            }
+        }
+
         const url = endpoint("/api/manga")
         sendRequest(url)
             .then(handleStatus)

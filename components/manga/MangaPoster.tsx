@@ -1,5 +1,4 @@
 import { ProgressEntry } from "@/types/anilist";
-import { MouseEventHandler } from "react";
 
 interface Props {
     entry: ProgressEntry
