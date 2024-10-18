@@ -1,70 +1,38 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LoadingScreen } from "../LoadingScreen";
 import { endpoint } from "@/helpers/endpoint";
 import sendRequest from "@/helpers/request";
 import { FullscreenCenter } from "../FullscreenCenter";
-
-interface Media {
-    id: number
-    title: AnilistTitle
-    startDate: AnilistDate
-    status: string
-    chapters: number
-    volumes: number
-    coverImage: AnilistCoverImage
-    bannerImage: string
-    description: string
-    genres: string[]
-}
-
-interface AnilistDate {
-    year: number
-    month: number
-    day: number
-}
-
-interface AnilistTitle {
-    romaji: string
-    english: string
-}
-
-interface AnilistCoverImage {
-    large: string
-    medium: string
-    color: string
-}
-
-interface ProgressEntry {
-    progress: number
-    completedAt: AnilistDate
-    startedAt: AnilistDate
-    notes: string
-    score: number
-    status: string
-    media: Media
-}
-
-interface MediaList {
-    name: string
-    isCustomList: boolean
-    isSplitCompletedList: boolean
-    status: string
-    entries: ProgressEntry[]
-}
+import { MediaListDisclosure } from "./MediaListDisclosure";
+import { MediaList } from "@/types/anilist";
 
 export function MangaCollectionPage() {
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<boolean>(false)
     const [lists, setLists] = useState<MediaList[]>([])
+    const [reading, setReading] = useState<MediaList | null>(null)
+
+    const bgRef = useRef<HTMLDivElement>(null)
+    const interval = useRef<NodeJS.Timeout | null>(null)
 
     const handleStatus = (lists: MediaList[]) => {
-        setLists(lists)
         setLoading(false)
-        const firstList = lists[0]
-        const banners = firstList.entries.map((entry) => entry.media.bannerImage)
-        console.log(banners)
+        const reading = lists.find((list) => list.status === 'CURRENT')
+        const newLists = lists.filter((list) => !["CURRENT", "COMPLETED"].includes(list.status) && !list.isCustomList)
+        setLists(newLists)
+        if (reading !== undefined && interval.current === null) {
+            setReading(reading)
+            const banners = reading
+                .entries
+                .map((entry) => entry.media.bannerImage)
+                .filter((banner) => banner !== "")
+            setRandomBackground(banners)
+            interval.current = setInterval(() => {
+                setRandomBackground(banners)
+            }, 60000)
+        }
     }
 
     const handleError = () => {
@@ -72,8 +40,16 @@ export function MangaCollectionPage() {
         setError(true)
     }
 
-    const listNames = () => {
-        return lists.map((list, index) => <p key={index}>{list.name}</p>)
+    const setRandomBackground = (backgrounds: string[]) => {
+        const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+        const img = new Image();
+        img.src = randomBackground;
+
+        img.onload = () => {
+            if (bgRef.current) {
+                bgRef.current.style.backgroundImage = `url(${randomBackground})`;
+            }
+        };
     }
 
     useEffect(() => {
@@ -96,8 +72,16 @@ export function MangaCollectionPage() {
     }
 
     return (
-        <FullscreenCenter>
-            {listNames()}
-        </FullscreenCenter>
+        <>
+            <div className="my-[150px] mx-12">
+                <div className="flex flex-col gap-16">
+                    {reading !== null &&
+                        <MediaListDisclosure list={reading} open />
+                    }
+                    {lists.map((list, key) => <MediaListDisclosure key={key} list={list} />)}
+                </div>
+            </div>
+            <div className="bg-overlay fixed top-0 left-0 h-screen w-full bg-cover bg-no-repeat bg-center -z-[1]" ref={bgRef}></div>
+        </>
     )
 }
