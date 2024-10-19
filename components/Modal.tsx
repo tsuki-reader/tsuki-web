@@ -17,12 +17,10 @@ export function Modal({ opened, children, onClose }: Props) {
             if (dialog) {
                 dialog.showModal()
             }
-            document.body.classList.add('overflow-hidden')
         } else {
             if (dialog) {
                 dialog.close()
             }
-            document.body.classList.add('overflow-hidden')
         }
     }, [opened])
 
