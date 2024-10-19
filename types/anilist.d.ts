@@ -39,7 +39,7 @@ export interface AnilistCoverImage {
   color: string;
 }
 
-export interface ProgressEntry {
+export interface MediaList {
   progress: number;
   completedAt: AnilistDate;
   startedAt: AnilistDate;
@@ -49,10 +49,10 @@ export interface ProgressEntry {
   media: Media;
 }
 
-export interface MediaList {
+export interface MediaListGroup {
   name: string;
   isCustomList: boolean;
   isSplitCompletedList: boolean;
   status: string;
-  entries: ProgressEntry[];
+  entries: MediaList[];
 }

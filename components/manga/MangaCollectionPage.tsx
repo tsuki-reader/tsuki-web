@@ -6,14 +6,15 @@ import { endpoint } from "@/helpers/endpoint";
 import sendRequest from "@/helpers/request";
 import { FullscreenCenter } from "../FullscreenCenter";
 import { MediaListDisclosure } from "./MediaListDisclosure";
-import { MediaList } from "@/types/anilist";
+import { MediaListGroup } from "@/types/anilist";
 import { TokenContext } from "@/contexts/token";
+import { ErrorMessage } from "../ErrorMessage";
 
 export function MangaCollectionPage() {
     const [loading, setLoading] = useState<boolean>(true)
-    const [error, setError] = useState<boolean>(false)
-    const [lists, setLists] = useState<MediaList[]>([])
-    const [reading, setReading] = useState<MediaList | null>(null)
+    const [error, setError] = useState<string | null>(null)
+    const [lists, setLists] = useState<MediaListGroup[]>([])
+    const [reading, setReading] = useState<MediaListGroup | null>(null)
 
     const token = useContext(TokenContext)
 
@@ -33,7 +34,7 @@ export function MangaCollectionPage() {
     }
 
     useEffect(() => {
-        const handleStatus = (lists: MediaList[]) => {
+        const handleStatus = (lists: MediaListGroup[]) => {
             setLoading(false)
             const reading = lists.find((list) => list.status === 'CURRENT')
             const newLists = lists.filter((list) => !["CURRENT", "COMPLETED"].includes(list.status) && !list.isCustomList)
@@ -43,7 +44,7 @@ export function MangaCollectionPage() {
                 const banners = reading
                     .entries
                     .map((entry) => entry.media.bannerImage)
-                    .filter((banner) => banner !== "")
+                    .filter((banner) => banner.trim() !== "")
                 setRandomBackground(banners)
                 interval.current = setInterval(() => {
                     setRandomBackground(banners)
@@ -51,9 +52,9 @@ export function MangaCollectionPage() {
             }
         }
 
-        const handleError = () => {
+      const handleError = (e: {error: string}) => {
             setLoading(false)
-            setError(true)
+            setError(e.error)
         }
 
         const url = endpoint("/api/manga")
@@ -69,7 +70,7 @@ export function MangaCollectionPage() {
     if (error) {
         return (
             <FullscreenCenter>
-                <p>An error occurred. Please refresh the page.</p>
+                <ErrorMessage message={error} />
             </FullscreenCenter>
         )
     }

@@ -1,8 +1,8 @@
-import { MediaList } from "@/types/anilist";
+import { MediaListGroup } from "@/types/anilist";
 import { MangaPoster } from "./MangaPoster";
 
 interface Props {
-    list: MediaList
+    list: MediaListGroup
     open?: boolean
 }
 
