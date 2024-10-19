@@ -1,15 +1,16 @@
 'use client'
 
 import { FullscreenCenter } from "@/components/FullscreenCenter"
+import { TokenContext } from "@/contexts/token"
 import { endpoint } from "@/helpers/endpoint"
 import sendRequest from "@/helpers/request"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 export default function Callback() {
     const [accessToken, setAccessToken] = useState<string | null>(null)
     const [message, setMessage] = useState<string>("Logging in...")
-    const router = useRouter()
+
+    const token = useContext(TokenContext)
 
     useEffect(() => {
         const token = window.location.hash.replace("#access_token=", "").replace(/&.*/, "")
@@ -18,19 +19,18 @@ export default function Callback() {
 
     useEffect(() => {
         if (accessToken) {
-            const url = endpoint('/api/auth/login')
+            const url = endpoint('/api/anilist/login')
             const data = {
                 access_token: accessToken
             }
-            sendRequest(url, "POST", data)
-                // TODO: For some reason, using router here does not refresh status
-                .then(() => window.location.href = "/")
+            sendRequest(url, token, "POST", data)
+                .then(() => window.location.href = "/manga")
                 .catch((error) => {
                     console.error(error)
                     setMessage("Could not login to AniList")
                 })
         }
-    }, [accessToken, router])
+    }, [accessToken, token])
 
     return (
         <FullscreenCenter>

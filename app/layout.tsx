@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.tailwind.css";
 import { Nav } from "../components/nav/Nav";
-import StatusWrapper from "@/components/StatusWrapper";
+import { AuthWrapper } from "@/components/AuthWrapper";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,10 +30,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <StatusWrapper>
+        <AuthWrapper>
           <Nav />
           {children}
-        </StatusWrapper>
+        </AuthWrapper>
       </body>
     </html>
   );

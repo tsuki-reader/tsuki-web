@@ -1,12 +1,13 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { LoadingScreen } from "../LoadingScreen";
 import { endpoint } from "@/helpers/endpoint";
 import sendRequest from "@/helpers/request";
 import { FullscreenCenter } from "../FullscreenCenter";
 import { MediaListDisclosure } from "./MediaListDisclosure";
 import { MediaList } from "@/types/anilist";
+import { TokenContext } from "@/contexts/token";
 
 export function MangaCollectionPage() {
     const [loading, setLoading] = useState<boolean>(true)
@@ -14,13 +15,10 @@ export function MangaCollectionPage() {
     const [lists, setLists] = useState<MediaList[]>([])
     const [reading, setReading] = useState<MediaList | null>(null)
 
+    const token = useContext(TokenContext)
+
     const bgRef = useRef<HTMLDivElement>(null)
     const interval = useRef<NodeJS.Timeout | null>(null)
-
-    const handleError = () => {
-        setLoading(false)
-        setError(true)
-    }
 
     const setRandomBackground = (backgrounds: string[]) => {
         const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
@@ -53,11 +51,16 @@ export function MangaCollectionPage() {
             }
         }
 
+        const handleError = () => {
+            setLoading(false)
+            setError(true)
+        }
+
         const url = endpoint("/api/manga")
-        sendRequest(url)
+        sendRequest(url, token)
             .then(handleStatus)
             .catch(handleError)
-    }, [])
+    }, [token])
 
     if (loading) {
         return <LoadingScreen />

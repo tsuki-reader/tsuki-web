@@ -1,4 +1,4 @@
-export default async function sendRequest(url: string, method: string = "GET", data: object | null = null) {
+export default async function sendRequest(url: string, token: string, method: string = "GET", data: object | null = null) {
     let body: string | null = null
     if (data === null) {
         body = null
@@ -10,7 +10,8 @@ export default async function sendRequest(url: string, method: string = "GET", d
         method,
         headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
         },
         body
     })

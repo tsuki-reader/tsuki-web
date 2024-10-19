@@ -1,12 +1,13 @@
 'use client'
 
+import { TokenContext } from "@/contexts/token";
 import { endpoint } from "@/helpers/endpoint";
 import sendRequest from "@/helpers/request";
 import { Provider, Repository } from "@/types/extensions";
 import { faDownload, faRotate, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 interface Props {
     provider: Provider
@@ -17,6 +18,8 @@ interface Props {
 
 export function ProviderRow({ provider, repository, providerType, onProviderInstalled }: Props) {
     const [loading, setLoading] = useState<boolean>(false)
+
+    const token = useContext(TokenContext)
 
     const handleResponse = (providers: Provider[]) => {
         onProviderInstalled(providers, providerType)
@@ -51,7 +54,7 @@ export function ProviderRow({ provider, repository, providerType, onProviderInst
     const submitRequest = (_endpoint: string, method: string, data: object) => {
         setLoading(true)
         const url = endpoint(_endpoint)
-        sendRequest(url, method, data)
+        sendRequest(url, token, method, data)
             .then(handleResponse)
             .catch((error) => {
                 console.log(error)

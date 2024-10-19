@@ -3,22 +3,25 @@
 import { endpoint } from "@/helpers/endpoint"
 import sendRequest from "@/helpers/request"
 import { Repository } from "@/types/extensions"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { RepositoryButton } from "./RepositoryButton"
 import { InstallRepository } from "./InstallRepository"
 import { RepositoryModal } from "./RepositoryModal"
+import { TokenContext } from "@/contexts/token"
 
 export function Repositories() {
     const [repositories, setRepositories] = useState<Repository[]>([])
     const [selectedRepo, setSelectedRepo] = useState<Repository | null>(null)
     const [installRepoOpened, setInstallRepoOpened] = useState<boolean>(false)
 
+    const token = useContext(TokenContext)
+
     useEffect(() => {
         const url = endpoint('/api/repositories')
-        sendRequest(url)
+        sendRequest(url, token)
             .then((repos) => handleResponse(repos))
             .catch((error) => console.log(error))
-    }, [])
+    }, [token])
 
     const handleResponse = (repos: Repository[]) => {
         setRepositories(repos)

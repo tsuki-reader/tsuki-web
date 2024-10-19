@@ -4,10 +4,11 @@ import Image from "next/image";
 import { ProviderRow } from "./ProviderRow";
 import { endpoint } from "@/helpers/endpoint";
 import sendRequest from "@/helpers/request";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ErrorMessage } from "../ErrorMessage";
 import { ErrorResponse } from "@/types/requests";
 import { SuccessMessage } from "../SuccessMessage";
+import { TokenContext } from "@/contexts/token";
 
 interface Props {
     repository: Repository
@@ -24,9 +25,11 @@ export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, 
     const [mangaProviders, setMangaProviders] = useState<Provider[]>(repository.manga_providers)
     const [comicProviders, setComicProviders] = useState<Provider[]>(repository.comic_providers)
 
+    const token = useContext(TokenContext)
+
     const uninstall = () => {
         const url = endpoint(`/api/repositories/${repository.id}`)
-        sendRequest(url, 'DELETE')
+        sendRequest(url, token, 'DELETE')
             .then((repos) => onRepoUninstall(repos))
             .catch((error: ErrorResponse) => setErrorMessage(error.error))
     }
@@ -35,7 +38,7 @@ export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, 
         setErrorMessage(null)
         setSuccessMessage(null)
         const url = endpoint(`/api/repositories/${repository.id}`)
-        sendRequest(url, 'PATCH')
+        sendRequest(url, token, 'PATCH')
             .then((repo: Repository) => {
                 setErrorMessage(null)
                 setSuccessMessage('Repository updated successfully')
