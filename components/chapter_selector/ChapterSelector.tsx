@@ -8,6 +8,7 @@ import { useContext, useEffect, useState } from "react"
 import { ErrorMessage } from "../ErrorMessage"
 import { InstalledProvider } from "@/types/models"
 import { ChapterSelectorLoadingState } from "./ChapterSelectorLoadingState"
+import { ChapterSelectorErrorState } from "./ChapterSelectorErrorState"
 
 interface Props {
   mediaList: MediaList
@@ -23,7 +24,6 @@ export function ChapterSelector({ mediaList }: Props) {
 
   useEffect(() => {
     const handleStatus = (providers: InstalledProvider[]) => {
-      console.log(providers)
       setProviders(providers)
       setLoading(false)
     }
@@ -45,11 +45,7 @@ export function ChapterSelector({ mediaList }: Props) {
   }
 
   if (errorMessage) {
-    return (
-      <div className="rounded h-96 flex justify-center items-center bg-foreground/10 border-2 border-foreground">
-        <ErrorMessage message={errorMessage} />
-      </div>
-    )
+    return <ChapterSelectorErrorState message={errorMessage} />
   }
 
   if (providers.length === 0) {

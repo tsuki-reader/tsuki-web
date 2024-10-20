@@ -8,6 +8,6 @@ export function ErrorMessage({ message }: Props) {
     }
 
     return (
-        <p className="text-red-500">{message}</p>
+        <p className="px-1 rounded bg-red-500 text-foreground">{message}</p>
     )
 }
