@@ -9,8 +9,8 @@ interface Props {
 export function MediaListDisclosure({ list, open }: Props) {
     return (
         <details open={open}>
-            <summary className="marker:hidden list-none cursor-pointer">
-                <div className="font-bold text-4xl w-fit rounded bg-background p-4 border-2 border-foreground">
+            <summary className="marker:hidden list-none cursor-pointer focus:outline-none">
+                <div className="font-bold text-4xl w-fit rounded bg-foreground/10 p-4 border-2 border-foreground">
                     {list.name}
                 </div>
             </summary>

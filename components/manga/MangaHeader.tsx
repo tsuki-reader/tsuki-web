@@ -21,7 +21,7 @@ export function MangaHeader({ mediaList }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-16">
+    <div className="flex flex-col gap-16 mb-16">
       <div className="flex gap-16">
         <Image width={250}
           height={0}
