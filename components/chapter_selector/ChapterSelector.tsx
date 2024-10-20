@@ -5,10 +5,10 @@ import { endpoint } from "@/helpers/endpoint"
 import sendRequest from "@/helpers/request"
 import { MediaList } from "@/types/anilist"
 import { useContext, useEffect, useState } from "react"
-import { ErrorMessage } from "../ErrorMessage"
 import { InstalledProvider } from "@/types/models"
 import { ChapterSelectorLoadingState } from "./ChapterSelectorLoadingState"
 import { ChapterSelectorErrorState } from "./ChapterSelectorErrorState"
+import { ChapterSelectorNoProviderState } from "./ChapterSelectorNoProvidersState"
 
 interface Props {
   mediaList: MediaList
@@ -49,11 +49,7 @@ export function ChapterSelector({ mediaList }: Props) {
   }
 
   if (providers.length === 0) {
-    return (
-      <div className="rounded h-96 flex justify-center items-center bg-foreground/10 border-2 border-foreground">
-        <p>No providers available</p>
-      </div>
-    )
+    return <ChapterSelectorNoProviderState />
   }
 
   if (mediaList.mapping === null) {

@@ -10,7 +10,7 @@ export function MediaListDisclosure({ list, open }: Props) {
     return (
         <details open={open}>
             <summary className="marker:hidden list-none cursor-pointer focus:outline-none">
-                <div className="font-bold text-4xl w-fit rounded bg-foreground/10 p-4 border-2 border-foreground">
+                <div className="font-bold text-4xl w-fit rounded bg-foreground/10 p-4">
                     {list.name}
                 </div>
             </summary>
