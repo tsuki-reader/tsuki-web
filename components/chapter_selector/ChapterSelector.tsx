@@ -6,9 +6,12 @@ import sendRequest from "@/helpers/request"
 import { MediaList } from "@/types/anilist"
 import { useContext, useEffect, useState } from "react"
 import { InstalledProvider } from "@/types/models"
-import { ChapterSelectorLoadingState } from "./ChapterSelectorLoadingState"
-import { ChapterSelectorErrorState } from "./ChapterSelectorErrorState"
-import { ChapterSelectorNoProviderState } from "./ChapterSelectorNoProvidersState"
+import { LoadingState } from "./LoadingState"
+import { ErrorState } from "./ErrorState"
+import { NoProviderState } from "./NoProvidersState"
+import { NoProviderSelected } from "./NoProviderSelected"
+import Select from "react-dropdown-select"
+import styled from "@emotion/styled"
 
 interface Props {
   mediaList: MediaList
@@ -17,6 +20,7 @@ interface Props {
 // TODO: Support both manga and comics
 export function ChapterSelector({ mediaList }: Props) {
   const [providers, setProviders] = useState<InstalledProvider[]>([])
+  const [selectedProvider, setSelectedProvider] = useState<InstalledProvider | null>(mediaList.mapping?.installedProvider ?? null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -40,29 +44,83 @@ export function ChapterSelector({ mediaList }: Props) {
       .catch(handleError)
   }, [token])
 
-  if (loading) {
-    return <ChapterSelectorLoadingState />
+  const currentState = () => {
+    if (loading) {
+      return <LoadingState />
+    }
+
+    if (errorMessage) {
+      return <ErrorState message={errorMessage} />
+    }
+
+    if (providers.length === 0) {
+      return <NoProviderState />
+    }
+
+    if (selectedProvider === null) {
+      return <NoProviderSelected />
+    }
+
+    return <div>{selectedProvider.name}</div>
   }
 
-  if (errorMessage) {
-    return <ChapterSelectorErrorState message={errorMessage} />
-  }
-
-  if (providers.length === 0) {
-    return <ChapterSelectorNoProviderState />
-  }
-
-  if (mediaList.mapping === null) {
-    return (
-      <div className="rounded h-96 flex justify-center items-center bg-foreground/10 border-2 border-foreground">
-        <p>Choose a provider</p>
-      </div>
-    )
+  const onProviderSelected = (newProvider: string | object | null) => {
+    const p = newProvider !== null ? newProvider as InstalledProvider : null
+    setSelectedProvider(p)
+    // TODO: Send a request to backend and update the mediaList
   }
 
   return (
-    <div className="rounded h-96 p-4 w-full border-2 border-foreground bg-background">
-      <h2 className="text-2xl font-bold">Chapters</h2>
+    <div className="flex flex-col gap-4">
+      <div className="w-full max-w-80">
+        <StyledSelect
+          options={providers}
+          values={selectedProvider !== null ? [selectedProvider] : []}
+          onChange={(value) => onProviderSelected(value.at(0) ?? null)}
+          labelField="name"
+          valueField="id"
+          searchBy="name"
+          dropdownHandle={false}
+          placeholder="Select a provider"
+          color="#111427"
+          dropdownHeight="150px"
+        />
+      </div>
+      <div className="rounded h-96 bg-foreground/10 border-2 border-foreground">
+        {currentState()}
+      </div>
     </div>
   )
 }
+
+const StyledSelect = styled(Select)`
+  border: 2px solid rgb(var(--foreground)) !important;
+  border-radius: 0.25rem;
+  padding: 5px 10px;
+  background-color: rgba(var(--foreground-with-commas), 0.1);
+  cursor: text;
+
+  .react-dropdown-select-dropdown {
+    border: 2px solid rgb(var(--foreground)) !important;
+    border-radius: 0.25rem;
+    background-color: rgb(var(--foreground));
+    color: rgb(var(--background));
+    left: -2px;
+    top: 34px;
+  }
+
+  .react-dropdown-select-item-selected {
+    background-color: rgb(var(--background)) !important;
+    color: rgb(var(--foreground)) !important;
+    font-weight: bold;
+    border-bottom: none !important;
+  }
+
+  .react-dropdown-select-item {
+    border-bottom: none !important;
+  }
+
+  .react-dropdown-select-input::placeholder {
+    color: rgb(var(--foreground));
+  }
+`
