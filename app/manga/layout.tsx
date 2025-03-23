@@ -1,10 +1,10 @@
-import AnilistStatusWrapper from "@/components/anilist/AnilistStatusWrapper"
+import AnilistStatusWrapper from '@/components/anilist/AnilistStatusWrapper'
 
 interface Props {
   children: React.ReactNode
 }
 
-export default function MangaLayout({ children }: Props) {
+export default function MangaLayout ({ children }: Props) {
   return (
     <AnilistStatusWrapper>
       {children}

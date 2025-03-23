@@ -1,13 +1,13 @@
-import { MediaListGroup } from "@/types/anilist";
-import { MangaPoster } from "./MangaPoster";
+import { MediaListGroup } from '@/types/anilist'
+import { MangaPoster } from './MangaPoster'
 
 interface Props {
     list: MediaListGroup
     open?: boolean
 }
 
-export function MediaListDisclosure({ list, open }: Props) {
-    return (
+export function MediaListDisclosure ({ list, open }: Props) {
+  return (
         <details open={open}>
             <summary className="marker:hidden list-none cursor-pointer focus:outline-none">
                 <div className="font-bold text-4xl w-fit rounded bg-foreground/10 p-4">
@@ -18,5 +18,5 @@ export function MediaListDisclosure({ list, open }: Props) {
                 {list.entries.map((entry, key) => <MangaPoster key={key} entry={entry} />)}
             </div>
         </details>
-    )
+  )
 }

@@ -1,18 +1,18 @@
 'use client'
 
-import { TokenContext } from "@/contexts/token"
-import { endpoint } from "@/helpers/endpoint"
-import sendRequest from "@/helpers/request"
-import { MediaList } from "@/types/anilist"
-import { useContext, useEffect, useState } from "react"
-import { Chapter, InstalledProvider } from "@/types/models"
-import { LoadingState } from "./LoadingState"
-import { ErrorState } from "./ErrorState"
-import { NoProviderState } from "./NoProvidersState"
-import { NoProviderSelected } from "./NoProviderSelected"
-import Select from "react-dropdown-select"
-import styled from "@emotion/styled"
-import { ChapterList } from "./ChapterList"
+import { TokenContext } from '@/contexts/token'
+import { endpoint } from '@/helpers/endpoint'
+import sendRequest from '@/helpers/request'
+import { MediaList } from '@/types/anilist'
+import { useContext, useEffect, useState } from 'react'
+import { Chapter, InstalledProvider } from '@/types/models'
+import { LoadingState } from './LoadingState'
+import { ErrorState } from './ErrorState'
+import { NoProviderState } from './NoProvidersState'
+import { NoProviderSelected } from './NoProviderSelected'
+import Select from 'react-dropdown-select'
+import styled from '@emotion/styled'
+import { ChapterList } from './ChapterList'
 
 interface Props {
   mediaList: MediaList
@@ -25,7 +25,7 @@ interface AssignResponse {
 }
 
 // TODO: Support both manga and comics
-export function ChapterSelector({ mediaList, initialChapters }: Props) {
+export function ChapterSelector ({ mediaList, initialChapters }: Props) {
   const [providers, setProviders] = useState<InstalledProvider[]>([])
   const [selectedProvider, setSelectedProvider] = useState<InstalledProvider | null>(mediaList.mapping?.installedProvider ?? null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -46,7 +46,7 @@ export function ChapterSelector({ mediaList, initialChapters }: Props) {
     }
 
     // Retrieve list of providers
-    const url = endpoint("/api/providers?provider_type=manga")
+    const url = endpoint('/api/providers?provider_type=manga')
     sendRequest(url, token)
       .then(handleStatus)
       .catch(handleError)
@@ -81,7 +81,7 @@ export function ChapterSelector({ mediaList, initialChapters }: Props) {
     if (p === null) { return }
     setSelectedProvider(p)
     const url = endpoint(`/api/manga/${mediaList.media.id}/assign`)
-    sendRequest(url, token, "POST", {installed_provider_id: p.id})
+    sendRequest(url, token, 'POST', { installed_provider_id: p.id })
       .then(handleAssign)
       .catch((e: {error: string}) => setErrorMessage(e.error))
   }

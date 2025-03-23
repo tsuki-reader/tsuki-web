@@ -1,18 +1,18 @@
 'use client'
 
-import { sanitizeText } from "@/helpers/text"
-import { MediaList } from "@/types/anilist"
-import { faCalendar } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Image from "next/image"
+import { sanitizeText } from '@/helpers/text'
+import { MediaList } from '@/types/anilist'
+import { faCalendar } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Image from 'next/image'
 
 interface Props {
   mediaList: MediaList
 }
 
-export function MangaHeader({ mediaList }: Props) {
+export function MangaHeader ({ mediaList }: Props) {
   const mainTitle = () => {
-    return mediaList.media.title.english == "" ? mediaList.media.title.romaji : mediaList.media.title.english
+    return mediaList.media.title.english === '' ? mediaList.media.title.romaji : mediaList.media.title.english
   }
 
   const chapterCount = () => {
@@ -46,7 +46,7 @@ export function MangaHeader({ mediaList }: Props) {
             </div>
             <div className="flex gap-2 items-center px-4 py-2 rounded-full bg-foreground/10 border-2 border-foreground w-fit">{mediaList.progress} / {chapterCount()}</div>
           </div>
-          <div className="rounded bg-foreground/10 p-4 max-h-40 overflow-y-auto" dangerouslySetInnerHTML={{__html: sanitizeText(mediaList.media.description)}}></div>
+          <div className="rounded bg-foreground/10 p-4 max-h-40 overflow-y-auto" dangerouslySetInnerHTML={{ __html: sanitizeText(mediaList.media.description) }}></div>
         </div>
       </div>
       <div className="flex flex-wrap gap-4">

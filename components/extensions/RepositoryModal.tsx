@@ -1,14 +1,14 @@
-import { Repository, Provider } from "@/types/extensions";
-import { Modal } from "../Modal";
-import Image from "next/image";
-import { ProviderRow } from "./ProviderRow";
-import { endpoint } from "@/helpers/endpoint";
-import sendRequest from "@/helpers/request";
-import { useContext, useState } from "react";
-import { ErrorMessage } from "../ErrorMessage";
-import { ErrorResponse } from "@/types/requests";
-import { SuccessMessage } from "../SuccessMessage";
-import { TokenContext } from "@/contexts/token";
+import { Repository, Provider } from '@/types/extensions'
+import { Modal } from '../Modal'
+import Image from 'next/image'
+import { ProviderRow } from './ProviderRow'
+import { endpoint } from '@/helpers/endpoint'
+import sendRequest from '@/helpers/request'
+import { useContext, useState } from 'react'
+import { ErrorMessage } from '../ErrorMessage'
+import { ErrorResponse } from '@/types/requests'
+import { SuccessMessage } from '../SuccessMessage'
+import { TokenContext } from '@/contexts/token'
 
 interface Props {
     repository: Repository
@@ -19,61 +19,61 @@ interface Props {
 }
 
 // TODO: Send a request to retrieve the providers
-export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, onRepoUpdate }: Props) {
-    const [errorMessage, setErrorMessage] = useState<string | null>(null)
-    const [successMessage, setSuccessMessage] = useState<string | null>(null)
-    const [mangaProviders, setMangaProviders] = useState<Provider[]>(repository.manga_providers)
-    const [comicProviders, setComicProviders] = useState<Provider[]>(repository.comic_providers)
+export function RepositoryModal ({ repository, opened, onClose, onRepoUninstall, onRepoUpdate }: Props) {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [mangaProviders, setMangaProviders] = useState<Provider[]>(repository.manga_providers)
+  const [comicProviders, setComicProviders] = useState<Provider[]>(repository.comic_providers)
 
-    const token = useContext(TokenContext)
+  const token = useContext(TokenContext)
 
-    const uninstall = () => {
-        const url = endpoint(`/api/repositories/${repository.id}`)
-        sendRequest(url, token, 'DELETE')
-            .then((repos) => onRepoUninstall(repos))
-            .catch((error: ErrorResponse) => setErrorMessage(error.error))
-    }
+  const uninstall = () => {
+    const url = endpoint(`/api/repositories/${repository.id}`)
+    sendRequest(url, token, 'DELETE')
+      .then((repos) => onRepoUninstall(repos))
+      .catch((error: ErrorResponse) => setErrorMessage(error.error))
+  }
 
-    const update = () => {
+  const update = () => {
+    setErrorMessage(null)
+    setSuccessMessage(null)
+    const url = endpoint(`/api/repositories/${repository.id}`)
+    sendRequest(url, token, 'PATCH')
+      .then((repo: Repository) => {
         setErrorMessage(null)
-        setSuccessMessage(null)
-        const url = endpoint(`/api/repositories/${repository.id}`)
-        sendRequest(url, token, 'PATCH')
-            .then((repo: Repository) => {
-                setErrorMessage(null)
-                setSuccessMessage('Repository updated successfully')
-                onRepoUpdate(repo, repo.id !== repository.id, repository.id)
-            })
-            .catch((error: ErrorResponse) => setErrorMessage(error.error))
-    }
+        setSuccessMessage('Repository updated successfully')
+        onRepoUpdate(repo, repo.id !== repository.id, repository.id)
+      })
+      .catch((error: ErrorResponse) => setErrorMessage(error.error))
+  }
 
-    const closeModal = (event: React.SyntheticEvent<HTMLDialogElement, Event>) => {
-        setErrorMessage(null)
-        setSuccessMessage(null)
-        onClose(event)
-    }
+  const closeModal = (event: React.SyntheticEvent<HTMLDialogElement, Event>) => {
+    setErrorMessage(null)
+    setSuccessMessage(null)
+    onClose(event)
+  }
 
-    const onProviderInstalled = (providers: Provider[], type: string) => {
-        if (type === 'comics') {
-            setComicProviders(providers)
-        } else {
-            setMangaProviders(providers)
-        }
+  const onProviderInstalled = (providers: Provider[], type: string) => {
+    if (type === 'comics') {
+      setComicProviders(providers)
+    } else {
+      setMangaProviders(providers)
     }
+  }
 
-    const providerRows = (providers: Provider[], providerType: string) => {
-        if (providers.length === 0) {
-            return (
+  const providerRows = (providers: Provider[], providerType: string) => {
+    if (providers.length === 0) {
+      return (
                 <div className="w-full text-center">
                     No providers available
                 </div>
-            )
-        }
-
-        return providers.map((provider, index) => <ProviderRow key={index} provider={provider} repository={repository} providerType={providerType} onProviderInstalled={onProviderInstalled} />)
+      )
     }
 
-    return (
+    return providers.map((provider, index) => <ProviderRow key={index} provider={provider} repository={repository} providerType={providerType} onProviderInstalled={onProviderInstalled} />)
+  }
+
+  return (
         <Modal opened={opened} onClose={closeModal}>
             <div className="flex justify-center mb-8">
                 <Image
@@ -108,17 +108,17 @@ export function RepositoryModal({ repository, opened, onClose, onRepoUninstall, 
                 <details open>
                     <summary className="font-bold text-xl cursor-pointer">Manga providers</summary>
                     <div className="mt-4 flex flex-col gap-2">
-                        {providerRows(mangaProviders, "manga")}
+                        {providerRows(mangaProviders, 'manga')}
                     </div>
                 </details>
 
                 <details>
                     <summary className="font-bold text-xl cursor-pointer">Comic providers</summary>
                     <div className="mt-4 flex flex-col gap-2">
-                        {providerRows(comicProviders, "comics")}
+                        {providerRows(comicProviders, 'comics')}
                     </div>
                 </details>
             </div>
         </Modal>
-    )
+  )
 }

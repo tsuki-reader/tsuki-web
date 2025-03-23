@@ -1,3 +1,20 @@
 {
-    "extends": ["next/core-web-vitals", "next/typescript"]
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": "standard",
+    "overrides": [
+        {
+            "files": ["*.ts", "*.tsx"],
+            "parser": "@typescript-eslint/parser",
+            "extends": ["standard", "plugin:@typescript-eslint/recommended"]
+        }
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "rules": {
+        "@typescript-eslint/no-non-null-assertion": "off"
+    }
 }

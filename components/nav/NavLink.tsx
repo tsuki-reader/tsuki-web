@@ -1,21 +1,21 @@
 'use client'
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 interface Props {
     text: string
     href: string
 }
 
-export function NavLink({text, href}: Props) {
-    const pathname = usePathname()
+export function NavLink ({ text, href }: Props) {
+  const pathname = usePathname()
 
-    const classes = () => {
-        return pathname === href ? "text-foreground bg-foreground/10" : "text-foreground/75 hover:text-foreground hover:bg-foreground/10"
-    }
+  const classes = () => {
+    return pathname === href ? 'text-foreground bg-foreground/10' : 'text-foreground/75 hover:text-foreground hover:bg-foreground/10'
+  }
 
-    return (
+  return (
         <Link className={`rounded px-4 py-2 cursor-pointer h-fit ${classes()} transition duration-300 ease-in-out`} href={href}>{text}</Link>
-    )
+  )
 }

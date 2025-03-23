@@ -24,7 +24,7 @@ export default function Callback () {
         access_token: accessToken
       }
       sendRequest(url, token, 'POST', data)
-        .then(() => window.location.href = '/manga')
+        .then(() => { window.location.href = '/manga' })
         .catch((error) => {
           console.error(error)
           setMessage('Could not login to AniList')

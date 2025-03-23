@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef } from 'react'
 
 interface Props {
     opened: boolean
@@ -8,29 +8,29 @@ interface Props {
     onClose?: React.ReactEventHandler<HTMLDialogElement> | undefined
 }
 
-export function Modal({ opened, children, onClose }: Props) {
-    const ref = useRef<HTMLDialogElement>(null)
+export function Modal ({ opened, children, onClose }: Props) {
+  const ref = useRef<HTMLDialogElement>(null)
 
-    useEffect(() => {
-        const dialog = ref.current
-        if (opened) {
-            if (dialog) {
-                dialog.showModal()
-            }
-        } else {
-            if (dialog) {
-                dialog.close()
-            }
-        }
-    }, [opened])
-
-    const onClick = (event: React.MouseEvent<Element, MouseEvent>) => {
-        if (ref.current !== null && event.target === ref.current) {
-            ref.current.close()
-        }
+  useEffect(() => {
+    const dialog = ref.current
+    if (opened) {
+      if (dialog) {
+        dialog.showModal()
+      }
+    } else {
+      if (dialog) {
+        dialog.close()
+      }
     }
+  }, [opened])
 
-    return (
+  const onClick = (event: React.MouseEvent<Element, MouseEvent>) => {
+    if (ref.current !== null && event.target === ref.current) {
+      ref.current.close()
+    }
+  }
+
+  return (
         <dialog ref={ref}
             onClick={onClick}
             onClose={onClose}
@@ -40,5 +40,5 @@ export function Modal({ opened, children, onClose }: Props) {
                 {children}
             </div>
         </dialog>
-    )
+  )
 }

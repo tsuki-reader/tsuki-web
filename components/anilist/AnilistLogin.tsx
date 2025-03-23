@@ -1,14 +1,14 @@
-"use client"
+'use client'
 
-import { FullscreenCenter } from "../FullscreenCenter"
-import { AnilistLogo } from "../svg/AnilistLogo"
-import { Logo } from "../svg/Logo"
+import { FullscreenCenter } from '../FullscreenCenter'
+import { AnilistLogo } from '../svg/AnilistLogo'
+import { Logo } from '../svg/Logo'
 
 interface Props {
   clientId: string
 }
 
-export function AnilistLogin({ clientId }: Props) {
+export function AnilistLogin ({ clientId }: Props) {
   return (
     <FullscreenCenter>
       <div className="flex flex-col items-center text-center rounded-lg border-2 border-foreground m-4 p-16">
@@ -23,5 +23,5 @@ export function AnilistLogin({ clientId }: Props) {
         </a>
       </div>
     </FullscreenCenter>
-  );
+  )
 }

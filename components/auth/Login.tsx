@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { useContext, useState } from "react"
-import { FullscreenCenter } from "../FullscreenCenter"
-import { Logo } from "../svg/Logo"
-import { endpoint } from "@/helpers/endpoint"
-import sendRequest from "@/helpers/request"
-import { usePathname } from "next/navigation"
-import { ErrorMessage } from "../ErrorMessage"
-import { TokenContext } from "@/contexts/token"
+import { useContext, useState } from 'react'
+import { FullscreenCenter } from '../FullscreenCenter'
+import { Logo } from '../svg/Logo'
+import { endpoint } from '@/helpers/endpoint'
+import sendRequest from '@/helpers/request'
+import { usePathname } from 'next/navigation'
+import { ErrorMessage } from '../ErrorMessage'
+import { TokenContext } from '@/contexts/token'
 
 interface Token {
   token: string
@@ -17,9 +17,9 @@ interface ErrorResponse {
   error: string
 }
 
-export function Login() {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+export function Login () {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const token = useContext(TokenContext)
@@ -27,17 +27,17 @@ export function Login() {
   const pathname = usePathname()
 
   const handleStatus = (json: Token) => {
-    localStorage.setItem("tsuki_token", json.token)
+    localStorage.setItem('tsuki_token', json.token)
     window.location.href = pathname
   }
 
   const login = () => {
-    const url = endpoint("/auth/login")
+    const url = endpoint('/auth/login')
     const data = {
       username,
-      password,
+      password
     }
-    sendRequest(url, token, "POST", data)
+    sendRequest(url, token, 'POST', data)
       .then(handleStatus)
       .catch((e: ErrorResponse) => setErrorMessage(e.error))
   }

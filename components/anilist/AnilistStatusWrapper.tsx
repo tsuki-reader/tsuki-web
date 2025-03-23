@@ -1,13 +1,13 @@
 'use client'
 
-import { endpoint } from "@/helpers/endpoint";
-import sendRequest from "@/helpers/request";
-import React, { useContext, useEffect, useState } from "react";
-import { AnilistLogin } from "./AnilistLogin";
-import { LoadingScreen } from "../LoadingScreen";
-import { Viewer } from "@/types/anilist";
-import { ViewerProvider } from "@/contexts/viewer";
-import { TokenContext } from "@/contexts/token";
+import { endpoint } from '@/helpers/endpoint'
+import sendRequest from '@/helpers/request'
+import React, { useContext, useEffect, useState } from 'react'
+import { AnilistLogin } from './AnilistLogin'
+import { LoadingScreen } from '../LoadingScreen'
+import { Viewer } from '@/types/anilist'
+import { ViewerProvider } from '@/contexts/viewer'
+import { TokenContext } from '@/contexts/token'
 
 interface Props {
   children: React.ReactNode
@@ -19,11 +19,11 @@ interface StatusResponse {
   clientId: string
 }
 
-export default function AnilistStatusWrapper({ children }: Props) {
+export default function AnilistStatusWrapper ({ children }: Props) {
   const [loading, setLoading] = useState(true)
   const [authenticated, setAuthenticated] = useState(false)
   const [currentViewer, setCurrentViewer] = useState<Viewer | null>(null)
-  const [clientId, setClientId] = useState<string>("")
+  const [clientId, setClientId] = useState<string>('')
 
   const token = useContext(TokenContext)
 
@@ -46,8 +46,8 @@ export default function AnilistStatusWrapper({ children }: Props) {
   }
 
   useEffect(() => {
-    const url = endpoint("/api/anilist/status")
-    sendRequest(url, token, "GET")
+    const url = endpoint('/api/anilist/status')
+    sendRequest(url, token, 'GET')
       .then(handleStatus)
       .catch(handleError)
   }, [token])

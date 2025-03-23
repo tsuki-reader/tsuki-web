@@ -1,3 +1,11 @@
+export interface InstalledProvider {
+  id: number
+  name: string
+  providerId: string
+  repositoryId: string
+  providerType: string
+}
+
 export interface MangaMapping {
   id: number
   anilistId: number
@@ -5,14 +13,6 @@ export interface MangaMapping {
   progress: number
   chapters: number
   installedProvider: InstalledProvider
-}
-
-export interface InstalledProvider {
-  id: number
-  name: string
-  providerId: string
-  repositoryId: string
-  providerType: string
 }
 
 export interface Chapter {

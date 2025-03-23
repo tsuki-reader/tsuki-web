@@ -1,11 +1,11 @@
-import { ChangeEvent, useContext, useState } from "react"
-import { Modal } from "../Modal"
-import { endpoint } from "@/helpers/endpoint"
-import sendRequest from "@/helpers/request"
-import { Repository } from "@/types/extensions"
-import { ErrorMessage } from "../ErrorMessage"
-import { ErrorResponse } from "@/types/requests"
-import { TokenContext } from "@/contexts/token"
+import { ChangeEvent, useContext, useState } from 'react'
+import { Modal } from '../Modal'
+import { endpoint } from '@/helpers/endpoint'
+import sendRequest from '@/helpers/request'
+import { Repository } from '@/types/extensions'
+import { ErrorMessage } from '../ErrorMessage'
+import { ErrorResponse } from '@/types/requests'
+import { TokenContext } from '@/contexts/token'
 
 interface Props {
   opened: boolean
@@ -13,15 +13,16 @@ interface Props {
   onClose: React.ReactEventHandler<HTMLDialogElement>
 }
 
-export function InstallRepository({ opened, onRepoInstalled, onClose }: Props) {
+export function InstallRepository ({ opened, onRepoInstalled, onClose }: Props) {
   const [valid, setValid] = useState<boolean>(false)
-  const [value, setValue] = useState<string>("")
+  const [value, setValue] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const token = useContext(TokenContext)
 
   const isValidUrl = (url: string) => {
     try {
+      /* eslint-disable no-new */
       new URL(url)
       return true
     } catch (err) {
@@ -41,23 +42,23 @@ export function InstallRepository({ opened, onRepoInstalled, onClose }: Props) {
 
   const handleResponse = (repos: Repository[]) => {
     onRepoInstalled(repos)
-    setValue("")
+    setValue('')
     setErrorMessage(null)
   }
 
   const closeModal = (
-    event: React.SyntheticEvent<HTMLDialogElement, Event>,
+    event: React.SyntheticEvent<HTMLDialogElement, Event>
   ) => {
     setErrorMessage(null)
     onClose(event)
   }
 
   const install = () => {
-    const url = endpoint("/api/repositories")
+    const url = endpoint('/api/repositories')
     const data = {
-      url: value,
+      url: value
     }
-    sendRequest(url, token, "POST", data)
+    sendRequest(url, token, 'POST', data)
       .then(handleResponse)
       .catch((error: ErrorResponse) => setErrorMessage(error.error))
   }

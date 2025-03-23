@@ -1,13 +1,13 @@
-import { Repository } from "@/types/extensions";
-import Image from "next/image";
+import { Repository } from '@/types/extensions'
+import Image from 'next/image'
 
 interface Props {
     repository: Repository
     onClick: () => void
 }
 
-export function RepositoryButton({ repository, onClick }: Props) {
-    return (
+export function RepositoryButton ({ repository, onClick }: Props) {
+  return (
         <div onClick={onClick} className="flex flex-col p-6 items-center h-fit w-fit gap-4 hover:bg-foreground/10 border-2 border-transparent hover:border-foreground/50 rounded cursor-pointer transition duration-300 ease-in-out">
             <Image
                 className="h-16 w-auto"
@@ -21,5 +21,5 @@ export function RepositoryButton({ repository, onClick }: Props) {
                 <small className="font-thin">{repository.id}</small>
             </div>
         </div>
-    )
+  )
 }
