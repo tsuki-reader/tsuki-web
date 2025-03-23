@@ -102,7 +102,7 @@ export function ChapterSelector ({ mediaList, initialChapters }: Props) {
           dropdownHeight="150px"
         />
       </div>
-      <div className="rounded h-96 bg-foreground/10 border-2 border-foreground">
+      <div className="rounded min-h-96 bg-foreground/10 border-2 border-foreground">
         {currentState()}
       </div>
     </div>
