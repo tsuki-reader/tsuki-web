@@ -69,7 +69,7 @@ export function ChapterSelector ({ mediaList, initialChapters }: Props) {
       return <NoProviderSelected />
     }
 
-    return <ChapterList chapters={chapters} />
+    return <ChapterList chapters={chapters} mediaList={mediaList} />
   }
 
   const handleAssign = (response: AssignResponse) => {

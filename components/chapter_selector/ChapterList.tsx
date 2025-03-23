@@ -1,22 +1,25 @@
 'use client'
 
 import { capitalizeText } from '@/helpers/text'
+import { MediaList } from '@/types/anilist'
 import { Chapter } from '@/types/models'
 import { useEffect, useState } from 'react'
+import Reader from '../Reader'
 
 interface Props {
+  mediaList: MediaList
   chapters: Chapter[]
 }
 
-export function ChapterList ({ chapters }: Props) {
+export function ChapterList ({ mediaList, chapters }: Props) {
   const [page, setPage] = useState(1)
   const [currentChapters, setCurrentChapters] = useState<Chapter[]>([])
   const [maxPages, setMaxPages] = useState(1)
+  const [currentChapter, setCurrentChapter] = useState<Chapter | undefined>(undefined)
 
   useEffect(() => {
     const max = Math.ceil(chapters.length / 10)
     setMaxPages(max)
-    console.log(max)
   }, [chapters])
 
   useEffect(() => {
@@ -41,13 +44,13 @@ export function ChapterList ({ chapters }: Props) {
         <thead className="text-left">
           <tr>
             <th className="px-4 py-4 font-bold whitespace-nowrap">Name</th>
-            <th className="px-4 py-4 font-bold whitespace-nowrap w-0">Chapter number</th>
+            <th className="px-4 py-4 font-bold whitespace-nowrap w-0">Absolute number</th>
           </tr>
         </thead>
 
         <tbody className="divide-y divide-navy">
           {currentChapters.map((chapter, index) => (
-            <tr className="hover:bg-foreground/30" key={index}>
+              <tr className="cursor-pointer hover:bg-foreground/30" key={index} onClick={() => { setCurrentChapter(chapter) }}>
               <td className="px-4 py-4 font-medium whitespace-nowrap">{capitalizeText(chapter.title)}</td>
               <td className="px-4 py-4 whitespace-nowrap">{chapter.absoluteNumber}</td>
             </tr>
@@ -104,6 +107,8 @@ export function ChapterList ({ chapters }: Props) {
           </li>
         </ol>
       </div>
+
+      <Reader mediaList={mediaList} currentChapter={currentChapter} setCurrentChapter={setCurrentChapter} />
     </>
   )
 }
