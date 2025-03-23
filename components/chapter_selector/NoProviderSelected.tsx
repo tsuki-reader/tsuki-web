@@ -1,7 +1,7 @@
-import { faPuzzlePiece } from "@fortawesome/free-solid-svg-icons/faPuzzlePiece";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons/faPuzzlePiece'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export function NoProviderSelected() {
+export function NoProviderSelected () {
   return (
     <div className="rounded h-96 flex flex-col gap-4 justify-center items-center">
       <FontAwesomeIcon icon={faPuzzlePiece} className="text-4xl" />

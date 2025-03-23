@@ -1,7 +1,7 @@
-import { MangaCollectionPage } from "@/components/manga/MangaCollectionPage";
+import { MangaCollectionPage } from '@/components/manga/MangaCollectionPage'
 
-export default function Page() {
-    return (
-        <MangaCollectionPage />
-    )
+export default function Page () {
+  return (
+    <MangaCollectionPage />
+  )
 }

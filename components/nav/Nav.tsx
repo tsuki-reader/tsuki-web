@@ -5,11 +5,10 @@ import { NavLink } from './NavLink'
 import { Logo } from '../svg/Logo'
 import { NavLinkIcon } from './NavLinkIcon'
 
-export function Nav() {
-
+export function Nav () {
   const logout = () => {
-    localStorage.setItem("tsuki_token", "")
-    window.location.href = "/"
+    localStorage.setItem('tsuki_token', '')
+    window.location.href = '/'
   }
 
   return (

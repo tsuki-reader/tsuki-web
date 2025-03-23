@@ -1,7 +1,7 @@
-import Callback from "./callback";
+import Callback from './callback'
 
-export default function Page() {
-    return (
-        <Callback />
-    )
+export default function Page () {
+  return (
+    <Callback />
+  )
 }

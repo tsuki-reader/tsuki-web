@@ -14,3 +14,11 @@ export interface InstalledProvider {
   repositoryId: string
   providerType: string
 }
+
+export interface Chapter {
+    title: string
+    id: string
+    provider: string
+    chapter: string
+    absoluteNumber: number
+}

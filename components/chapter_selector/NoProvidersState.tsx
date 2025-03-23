@@ -1,8 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTableList } from "@fortawesome/free-solid-svg-icons"
-import Link from "next/link"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTableList } from '@fortawesome/free-solid-svg-icons'
+import Link from 'next/link'
 
-export function NoProviderState() {
+export function NoProviderState () {
   return (
     <div className="rounded h-full flex flex-col gap-4 justify-center items-center">
       <FontAwesomeIcon icon={faTableList} className="text-4xl" />

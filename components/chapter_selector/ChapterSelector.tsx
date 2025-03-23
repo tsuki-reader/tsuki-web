@@ -5,24 +5,32 @@ import { endpoint } from "@/helpers/endpoint"
 import sendRequest from "@/helpers/request"
 import { MediaList } from "@/types/anilist"
 import { useContext, useEffect, useState } from "react"
-import { InstalledProvider } from "@/types/models"
+import { Chapter, InstalledProvider } from "@/types/models"
 import { LoadingState } from "./LoadingState"
 import { ErrorState } from "./ErrorState"
 import { NoProviderState } from "./NoProvidersState"
 import { NoProviderSelected } from "./NoProviderSelected"
 import Select from "react-dropdown-select"
 import styled from "@emotion/styled"
+import { ChapterList } from "./ChapterList"
 
 interface Props {
   mediaList: MediaList
+  initialChapters: Chapter[]
+}
+
+interface AssignResponse {
+    mediaList: MediaList,
+    chapters: Chapter[]
 }
 
 // TODO: Support both manga and comics
-export function ChapterSelector({ mediaList }: Props) {
+export function ChapterSelector({ mediaList, initialChapters }: Props) {
   const [providers, setProviders] = useState<InstalledProvider[]>([])
   const [selectedProvider, setSelectedProvider] = useState<InstalledProvider | null>(mediaList.mapping?.installedProvider ?? null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [chapters, setChapters] = useState<Chapter[]>(initialChapters)
 
   const token = useContext(TokenContext)
 
@@ -61,13 +69,21 @@ export function ChapterSelector({ mediaList }: Props) {
       return <NoProviderSelected />
     }
 
-    return <div>{selectedProvider.name}</div>
+    return <ChapterList chapters={chapters} />
+  }
+
+  const handleAssign = (response: AssignResponse) => {
+    setChapters(response.chapters)
   }
 
   const onProviderSelected = (newProvider: string | object | null) => {
     const p = newProvider !== null ? newProvider as InstalledProvider : null
+    if (p === null) { return }
     setSelectedProvider(p)
-    // TODO: Send a request to backend and update the mediaList
+    const url = endpoint(`/api/manga/${mediaList.media.id}/assign`)
+    sendRequest(url, token, "POST", {installed_provider_id: p.id})
+      .then(handleAssign)
+      .catch((e: {error: string}) => setErrorMessage(e.error))
   }
 
   return (
