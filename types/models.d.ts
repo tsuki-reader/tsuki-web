@@ -22,3 +22,9 @@ export interface Chapter {
     chapter: string
     absoluteNumber: number
 }
+
+export interface Page {
+    image_url: string
+    provider: string
+    page_number: number
+}
